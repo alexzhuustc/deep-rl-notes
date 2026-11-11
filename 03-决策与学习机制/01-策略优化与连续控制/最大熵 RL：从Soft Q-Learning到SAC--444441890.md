@@ -59,11 +59,23 @@ $$
 
 分别定义**soft Q-function**（最优）与**soft value function**（最优）为
 
-$\begin{aligned} &Q_{\mathrm{soft}}^{*}\left(\mathbf{~s}_{t}, \mathbf{a}_{t}\right)=r_{t}+ \mathbb{E}_{\left(\mathbf{s}_{t+1}, \ldots\right) \sim \rho_{\pi_{\mathrm{MaxEnt}}^{*} }}\left[\sum_{l=1}^{\infty} \gamma^{l}\left(r_{t+l}+\alpha \mathcal{H}\left(\pi_{\mathrm{MaxEnt}}^{*}\left(\cdot \mid \mathbf{s}_{t+l}\right)\right)\right)\right] \end{aligned} \\$$V_{\mathrm{soft}}^{*}\left(\mathbf{s}_{t}\right)=\alpha \log \int_{\mathcal{A}} \exp \left(\frac{1}{\alpha} Q_{\mathrm{soft}}^{*}\left(\mathbf{s}_{t}, \mathbf{a}^{\prime}\right)\right) d \mathbf{a}^{\prime} \\$
+$$
+\begin{aligned} &Q_{\mathrm{soft}}^{*}\left(\mathbf{~s}_{t}, \mathbf{a}_{t}\right)=r_{t}+ \mathbb{E}_{\left(\mathbf{s}_{t+1}, \ldots\right) \sim \rho_{\pi_{\mathrm{MaxEnt}}^{*} }}\left[\sum_{l=1}^{\infty} \gamma^{l}\left(r_{t+l}+\alpha \mathcal{H}\left(\pi_{\mathrm{MaxEnt}}^{*}\left(\cdot \mid \mathbf{s}_{t+l}\right)\right)\right)\right] \end{aligned}
+$$
+
+$$
+V_{\mathrm{soft}}^{*}\left(\mathbf{s}_{t}\right)=\alpha \log \int_{\mathcal{A}} \exp \left(\frac{1}{\alpha} Q_{\mathrm{soft}}^{*}\left(\mathbf{s}_{t}, \mathbf{a}^{\prime}\right)\right) d \mathbf{a}^{\prime}
+$$
 
 这两个公式均有星号上标，表示这里的Q与V均对应最优策略 $\pi_{\mathrm{MaxEnt}}^{*} $，与Q-learning中直接求解最优策略的Q值类似。为了方便理解，我们回顾一下标准RL框架中最优Q与最优V的计算公式：
 
-$\begin{aligned} &Q_{\mathrm{std}}^{*}\left(\mathbf{~s}_{t}, \mathbf{a}_{t}\right)=r_{t}+ \mathbb{E}_{\left(\mathbf{s}_{t+1}, \ldots\right) \sim \rho_{\pi^*}}\left[\sum_{l=1}^{\infty} \gamma^{l}r_{t+l}\right] \end{aligned} \\$$V_{\mathrm{std}}^{*}\left(\mathbf{~s}_{t}\right) =\max_a Q_{\mathrm{std}}^{*}\left(\mathbf{~s}_{t}, \mathbf{a}\right) \\$
+$$
+\begin{aligned} &Q_{\mathrm{std}}^{*}\left(\mathbf{~s}_{t}, \mathbf{a}_{t}\right)=r_{t}+ \mathbb{E}_{\left(\mathbf{s}_{t+1}, \ldots\right) \sim \rho_{\pi^*}}\left[\sum_{l=1}^{\infty} \gamma^{l}r_{t+l}\right] \end{aligned}
+$$
+
+$$
+V_{\mathrm{std}}^{*}\left(\mathbf{~s}_{t}\right) =\max_a Q_{\mathrm{std}}^{*}\left(\mathbf{~s}_{t}, \mathbf{a}\right)
+$$
 
 很明显， $Q_{\mathrm{soft}}^*$ 就是把标准框架中 $Q_{\mathrm{std}}^{*}$ 的计算公式中的奖励替换成了奖励加熵，这是标准RL框架在最大熵框架下的直接扩展；然而，不同于标准RL框架中，$Q_{\mathrm{std}}^{*}$ 取最大值就得到了 $V_{\mathrm{std}}^{*}$，在最大熵框架下，$V_{\mathrm{soft}}^{*}$ 值函数是一种 **SoftMax**（$\operatorname{softmax}_{\mathbf{a}} f(\mathbf{a}):=\log \int \exp f(\mathbf{a}) d \mathbf{a}$） 形式，这是一种smooth maximum，即平滑地取最大值，$\alpha\rightarrow0$ 时，SoftMax 就退化成了HardMax，此时 $V_{\mathrm{soft}}^{*}$ 与 $V_{\mathrm{std}}^{*}$ 的形式完全一致。
 
@@ -73,7 +85,7 @@ $Q_{\mathrm{soft}}^*$ 是根据最大熵目标直接定义得到的，而 $V_{\m
 
 上面定义的soft Q满足以下**soft bellman equation**（最优）：
 
-$Q_{\mathrm{soft}}^{*}\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)=r_{t}+\mathbb{E}\left[\gamma \operatorname{softmax}_{\mathbf{a}} Q_{\mathrm{soft}}^{*}\left(\mathbf{s}_{t+1}, \mathbf{a}\right)\right] \\$$Q_{\mathrm{soft}}^{*}\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)=r_{t}+\gamma \mathbb{E}_{\mathbf{s}_{t+1} \sim p_{\mathrm{s}}}\left[V_{\mathrm{soft}}^{*}\left(\mathbf{s}_{t+1}\right)\right] \\$
+$Q_{\mathrm{soft}}^{*}\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)=r_{t}+\mathbb{E}\left[\gamma \operatorname{softmax}_{\mathbf{a}} Q_{\mathrm{soft}}^{*}\left(\mathbf{s}_{t+1}, \mathbf{a}\right)\right]$ $Q_{\mathrm{soft}}^{*}\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)=r_{t}+\gamma \mathbb{E}_{\mathbf{s}_{t+1} \sim p_{\mathrm{s}}}\left[V_{\mathrm{soft}}^{*}\left(\mathbf{s}_{t+1}\right)\right]$
 
 这里的因果关系是，首先根据 $Q_{\mathrm{soft}}^*$ 的定义可以推导得到第一个贝尔曼方程，根据该贝尔曼方程，我们可以类似于标准框架 $Q_{\mathrm{std}}^{*}$ 与 $V_{\mathrm{std}}^{*}$ 之间的关系建立 $Q_{\mathrm{soft}}^{*}$ 与 $V_{\mathrm{soft}}^{*}$ 之间的联系，这样应该就好理解了！
 
@@ -217,7 +229,13 @@ $$
 
 根据SGVD，$\phi$ 的更新方向可以计算为
 
-$\begin{aligned} \Delta f^{\phi}\left(\cdot ; \mathrm{s}_{t}\right)=& \mathbb{E}_{\mathrm{a}_{t} \sim \pi^{\phi}}\left[\left.\kappa\left(\mathbf{a}_{t}, f^{\phi}\left(\cdot ; \mathrm{s}_{t}\right)\right) \nabla_{\mathbf{a}^{\prime}} Q_{\mathrm{soft}}^{\theta}\left(\mathrm{s}_{t}, \mathrm{a}^{\prime}\right)\right|_{\mathbf{a}^{\prime}=\mathbf{a}_{t}}\right.\\ &\left.+\left.\alpha \nabla_{\mathbf{a}^{\prime}} \kappa\left(\mathbf{a}^{\prime}, f^{\phi}\left(\cdot ; \mathbf{s}_{t}\right)\right)\right|_{\mathbf{a}^{\prime}=\mathbf{a}_{t}}\right] \end{aligned} \\$$\frac{\partial J_{\pi}\left(\phi ; \mathbf{s}_{t}\right)}{\partial \phi} \propto \mathbb{E}_{\xi}\left[\Delta f^{\phi}\left(\xi ; \mathbf{s}_{t}\right) \frac{\partial f^{\phi}\left(\xi ; \mathbf{s}_{t}\right)}{\partial \phi}\right] \\$
+$$
+\begin{aligned} \Delta f^{\phi}\left(\cdot ; \mathrm{s}_{t}\right)=& \mathbb{E}_{\mathrm{a}_{t} \sim \pi^{\phi}}\left[\left.\kappa\left(\mathbf{a}_{t}, f^{\phi}\left(\cdot ; \mathrm{s}_{t}\right)\right) \nabla_{\mathbf{a}^{\prime}} Q_{\mathrm{soft}}^{\theta}\left(\mathrm{s}_{t}, \mathrm{a}^{\prime}\right)\right|_{\mathbf{a}^{\prime}=\mathbf{a}_{t}}\right.\\ &\left.+\left.\alpha \nabla_{\mathbf{a}^{\prime}} \kappa\left(\mathbf{a}^{\prime}, f^{\phi}\left(\cdot ; \mathbf{s}_{t}\right)\right)\right|_{\mathbf{a}^{\prime}=\mathbf{a}_{t}}\right] \end{aligned}
+$$
+
+$$
+\frac{\partial J_{\pi}\left(\phi ; \mathbf{s}_{t}\right)}{\partial \phi} \propto \mathbb{E}_{\xi}\left[\Delta f^{\phi}\left(\xi ; \mathbf{s}_{t}\right) \frac{\partial f^{\phi}\left(\xi ; \mathbf{s}_{t}\right)}{\partial \phi}\right]
+$$
 
 根据这里的梯度计算公式，我们就可以采用任意基于梯度的优化方法求得最优采样网络的参数。
 

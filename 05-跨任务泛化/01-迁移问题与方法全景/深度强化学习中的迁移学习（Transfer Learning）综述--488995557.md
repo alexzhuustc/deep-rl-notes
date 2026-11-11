@@ -15,7 +15,7 @@
 
 定义**源域（source domains）**为 $\boldsymbol{\mathcal{M}}_{s}=\left\{\mathcal{M}_{s} \mid \mathcal{M}_{s} \in \boldsymbol{\mathcal{M}}_{s}\right\}$ ，$\boldsymbol{\mathcal{M}}_{s}$ 可以为 **目标域（target domain）** $\mathcal{M}_t$ 提供先验知识，使得目标智能体能够学得更好（相比于不获取任何先验知识）。对于最简单的情况，两个相同域的智能体可以相互迁移知识，此时 $|\boldsymbol{\mathcal{M}}_{s}|=1$, $\mathcal{M}_{s}=\mathcal{M}_{t}$。
 
-- 【**强化学习场景下的迁移学习**】给定一个 **源域（source domains）**的集合 $\boldsymbol{\mathcal{M}}_{s}=\left\{\mathcal{M}_{s} \mid \mathcal{M}_{s} \in \boldsymbol{\mathcal{M}}_{s}\right\}$，以及一个 **目标域（target domain）**$\mathcal{M}_t$，**迁移学习（Transfer Learning，TL）**的目标是通过同时利用 $\boldsymbol{\mathcal{M}}_{s}$ 的外部信息 $\mathcal{D}_s$ 以及 $\mathcal{M}_t$ 的内部信息 $\mathcal{D}_t$，学习到目标域的最优策略 $\pi^*$，即：$\pi^{*}=\arg \max \mathbb{E}_{s \sim \mu_{0}^{t}, a \sim \pi}\left[Q_{\mathcal{M}}^{\pi}(s, a)\right], \\$ 其中策略 $\pi=\phi\left(\mathcal{D}_{s} \sim \mathcal{M}_{s}, \mathcal{D}_{t} \sim \mathcal{M}_{t}\right): \mathcal{S}^{t} \rightarrow \mathcal{A}^{t}$ 是目标域 $\mathcal{M}_t$ 中，状态到动作之间的函数映射关系，该策略从 $\mathcal{D}_s$ 与 $\mathcal{D}_t$ 学习得到。
+- 【**强化学习场景下的迁移学习**】给定一个 **源域（source domains）**的集合 $\boldsymbol{\mathcal{M}}_{s}=\left\{\mathcal{M}_{s} \mid \mathcal{M}_{s} \in \boldsymbol{\mathcal{M}}_{s}\right\}$，以及一个 **目标域（target domain）**$\mathcal{M}_t$，**迁移学习（Transfer Learning，TL）**的目标是通过同时利用 $\boldsymbol{\mathcal{M}}_{s}$ 的外部信息 $\mathcal{D}_s$ 以及 $\mathcal{M}_t$ 的内部信息 $\mathcal{D}_t$，学习到目标域的最优策略 $\pi^*$，即：$\pi^{*}=\arg \max \mathbb{E}_{s \sim \mu_{0}^{t}, a \sim \pi}\left[Q_{\mathcal{M}}^{\pi}(s, a)\right],$ 其中策略 $\pi=\phi\left(\mathcal{D}_{s} \sim \mathcal{M}_{s}, \mathcal{D}_{t} \sim \mathcal{M}_{t}\right): \mathcal{S}^{t} \rightarrow \mathcal{A}^{t}$ 是目标域 $\mathcal{M}_t$ 中，状态到动作之间的函数映射关系，该策略从 $\mathcal{D}_s$ 与 $\mathcal{D}_t$ 学习得到。
 
 在上述定义中，我们用 $\phi(\mathcal{D})$ 表示根据信息 $\mathcal{D}$ 学习到的策略。常规强化学习是上述定义的一种特殊情况：$\mathcal{D}_s=\emptyset$, $\pi=\phi(\mathcal{D}_t)$。
 
@@ -75,7 +75,7 @@ $$
 
 
 
-- **基于势函数的奖励设计（Potential based Reward Shaping，PBRS）**[2] 是最经典的一种奖励设计方法，该方法定义了一个设计函数 $F$ 来作为两个势函数（ $\phi(\cdot)$ ）之间的差异：$F\left(s, a, s^{\prime}\right)=\gamma \Phi\left(s^{\prime}\right)-\Phi(s), \\$ 其中势函数 $\phi(\cdot)$ 来自外部获取的知识，用于评估给定状态的质量。经证明，PBRS是保持策略不变性的充分必要条件。另外，原MDP与转换后的MDP所对应的最优Q函数有如下关系：$Q_{\mathcal{M}^{\prime}}^{*}(s, a)=Q_{\mathcal{M}}^{*}(s, a)-\Phi(s). \\$
+- **基于势函数的奖励设计（Potential based Reward Shaping，PBRS）**[2] 是最经典的一种奖励设计方法，该方法定义了一个设计函数 $F$ 来作为两个势函数（ $\phi(\cdot)$ ）之间的差异：$F\left(s, a, s^{\prime}\right)=\gamma \Phi\left(s^{\prime}\right)-\Phi(s),$ 其中势函数 $\phi(\cdot)$ 来自外部获取的知识，用于评估给定状态的质量。经证明，PBRS是保持策略不变性的充分必要条件。另外，原MDP与转换后的MDP所对应的最优Q函数有如下关系：$Q_{\mathcal{M}^{\prime}}^{*}(s, a)=Q_{\mathcal{M}}^{*}(s, a)-\Phi(s).$
 
 在PBRS的基础上，此后又出现了类似的几种方法：
 
@@ -103,18 +103,18 @@ $$
 根据示例何时用于知识迁移，LfD方法可以分为离线（offline）方法和在线（online）方法。在离线方法中，示例通常用于预训练RL模块，即利用这些示例用监督学习的方式初始化价值函数 $V(s)$，策略 $\pi$，或者是模型的动态转移概率。而在在线方法中，示例则直接用于引导智能体在学习过程中更有效地探索。以下我们讨论的大多数方法均为在线方法。
 
 - [8] 提出了通过示例进行策略迭代（Direct Policy Iteration with Demonstrations，DPID）算法。该方法分别从专家策略 $\pi_E$ 与正在学习的策略中产生样本 $D_E$ 与 $D_\pi$，然后利用 $D_\pi \cup D_\pi$ 对Q值进行蒙特卡洛估计，所学习的策略为：$\pi(s)=\underset{a \in \mathcal{A}}{\arg \max } \hat{Q}(s, a)$。然后该策略进一步通过一个损失函数 $\mathcal{L}(s,\pi_E)$ 最小化与专家策略决策之间的差异：  
-   $\mathcal{L}\left(\pi, \pi_{E}\right)=\frac{1}{N_{E}} \sum_{i=1}^{N_{E}} \mathbb{1}\left\{\pi_{E}\left(s_{i}\right) \neq \pi\left(s_{i}\right)\right\}, \\$ 其中 $N_E$ 是专家示例的数量，$\mathbb{1}(\cdot)$ 为指示函数。
+   $\mathcal{L}\left(\pi, \pi_{E}\right)=\frac{1}{N_{E}} \sum_{i=1}^{N_{E}} \mathbb{1}\left\{\pi_{E}\left(s_{i}\right) \neq \pi\left(s_{i}\right)\right\},$ 其中 $N_E$ 是专家示例的数量，$\mathbb{1}(\cdot)$ 为指示函数。
 - [9] 提出了示例中的深度Q-学习（Deep Q-learning from Demonstration，DQfD）算法，该算法用两个独立的回放池分别用于储存示例数据与自己产生的数据，这样示例中的数据总会以一定的概率被采样到。
 - [10] 提出的算法同样基于Q-learning框架，该算法结合了RS与LfD技术，根据专家示例构建了一种势函数，其中任意给定状态-动作的势被定义为其余专家经验之间的最高相似度，这样能够使得接近专家示例的状态-动作对被给予更多的信任，使得智能体趋近于专家策略的行为。
 - [11] 提出了适用于策略梯度框架的**生成对抗模仿学习（Generative Adversarial** **Imitation Learning ，GAIL）**算法，GAIL首先定义了 $d_\pi$ 用于表示策略 $\pi$ 的状态-动作分布，基于此，GAIL的目标为最小化当前策略 $\pi$ 与专家策略 $\pi_E$ 所对应的 $d_\pi$ 与 $d_{\pi_E}$ 之间的差异。具体而言，其奖励函数通过对抗训练获得：构建一个鉴别器（discriminator） $D$ 用于区分当前策略 $\pi$ 与专家策略 $\pi_E$ 所产生样本：  
-   $J_{D}=\max _{D: \mathcal{S} \times \mathcal{A} \rightarrow(0,1)} \mathbb{E}_{d_{\pi}} \log [1-D(s, a)]+\mathbb{E}_{d_{E}} \log [D(s, a)] \\$ 由于 $\pi_E$ 是未知的，它的状态-动作分布 $d_E$ 从给定的专家示例 $D_E$ 中估计而来。证明可得，对于最优的鉴别器，其输出满足 $D(s, a)=\frac{d_{\pi}}{d_{\pi}+d_{E}}$。鉴别器的输出将作为新的奖励函数 $r^{\prime}(s, a)=-\log (1-D(s, a))$ 用于估计分布匹配。最终，强化学习的目标变为通过优化一下minmax目标达到分布匹配：  
-   $\max _{\pi} \min _{D} J(\pi, D):=\mathbb{E}_{d_{\pi}} \log [1-D(s, a)]+\mathbb{E}_{d_{E}} \log [D(s, a)] \\$ GAIL与模仿学习有着很强的联系，只不过它利用了专家示例来进行分布匹配。
+   $J_{D}=\max _{D: \mathcal{S} \times \mathcal{A} \rightarrow(0,1)} \mathbb{E}_{d_{\pi}} \log [1-D(s, a)]+\mathbb{E}_{d_{E}} \log [D(s, a)]$ 由于 $\pi_E$ 是未知的，它的状态-动作分布 $d_E$ 从给定的专家示例 $D_E$ 中估计而来。证明可得，对于最优的鉴别器，其输出满足 $D(s, a)=\frac{d_{\pi}}{d_{\pi}+d_{E}}$。鉴别器的输出将作为新的奖励函数 $r^{\prime}(s, a)=-\log (1-D(s, a))$ 用于估计分布匹配。最终，强化学习的目标变为通过优化一下minmax目标达到分布匹配：\
+   $\max _{\pi} \min _{D} J(\pi, D):=\mathbb{E}_{d_{\pi}} \log [1-D(s, a)]+\mathbb{E}_{d_{E}} \log [D(s, a)]$ GAIL与模仿学习有着很强的联系，只不过它利用了专家示例来进行分布匹配。
 - [12] 在 GAIL的基础上提出了 POfD，该算法将鉴别器奖励与环境奖励结合起来，这样智能体可以同时最大化环境的累计奖励（RL目标）以及执行分布匹配（模仿学习）：  
-   $\max _{\theta}=\mathbb{E}_{d_{\pi}}[r(s, a)]-\lambda D_{J S}\left[d_{\pi} \| d_{E}\right] \\$ 论文进一步证明了该算法等同于一个动态的RS机制：  
-   $\max _{\theta}=\mathbb{E}_{d_{\pi}}\left[r^{\prime}(s, a)\right], \\$ 其中 $r^{\prime}(s, a)=r(s, a)-\lambda \log \left(D_{w}(s, a)\right)$ 为设计之后的奖励。
+   $\max _{\theta}=\mathbb{E}_{d_{\pi}}[r(s, a)]-\lambda D_{J S}\left[d_{\pi} \| d_{E}\right]$ 论文进一步证明了该算法等同于一个动态的RS机制：\
+   $\max _{\theta}=\mathbb{E}_{d_{\pi}}\left[r^{\prime}(s, a)\right],$ 其中 $r^{\prime}(s, a)=r(s, a)-\lambda \log \left(D_{w}(s, a)\right)$ 为设计之后的奖励。
 - [13] 将DQfD算法应用在了DDPG算法中，提出DQfD算法。
 - [14] 在DQfD的基础上，在目标函数中增加了一个行为克隆损失用于鼓励智能体模仿示例的行为：  
-   $\mathcal{L}_{B C}=\sum_{i=1}^{\left|D_{E}\right|}\left\|\pi\left(s_{i} \mid \theta_{\pi}\right)-a_{i}\right\|^{2} \mathbb{1}\left[Q\left(s_{i}, a_{i}\right)>Q\left(s_{i}, \pi\left(s_{i}\right)\right)\right] \\$ 该函数表明只有Q值更高的示例动作会对损失函数产生影响。
+   $\mathcal{L}_{B C}=\sum_{i=1}^{\left|D_{E}\right|}\left\|\pi\left(s_{i} \mid \theta_{\pi}\right)-a_{i}\right\|^{2} \mathbb{1}\left[Q\left(s_{i}, a_{i}\right)>Q\left(s_{i}, \pi\left(s_{i}\right)\right)\right]$ 该函数表明只有Q值更高的示例动作会对损失函数产生影响。
 
 上面所介绍的算法总结在下表中：
 
@@ -177,16 +177,21 @@ $$
 从另一个角度来考虑，策略蒸馏的方式同样可以分为两大类：（1）最小化教师与学生策略中动作分布之间的交叉熵损失；（2）最大化教师策略产生学生策略所产生的轨迹的概率，即 $\max_\theta P(\tau\sim\pi_E|\tau\sim\pi_\theta)$。
 
 - [16] 所提出的演员-模仿（Actor-mimic）算法是上述第一种方法，其策略蒸馏的损失函数为：  
-   $\mathcal{L}^{i}(\theta)=\sum_{a \in \mathcal{A}_{E_{i}}} \pi_{E_{i}}(a \mid s) \log _{\pi_{\theta}}(a \mid s) \\$ 其中每一个教师智能体都是根据DQN训练的，因此他们的策略根据Q-函数输出的玻尔兹曼分布得到：  
-   $\pi_{E_{i}}(a \mid s)=\frac{e^{\tau^{-1} Q_{E_{i}}(s, a)}}{\sum_{a^{\prime} \in \mathcal{A}_{E_{i}}} e^{\tau^{-1} Q_{E_{i}}\left(s, a^{\prime}\right)}} \\$
+   $\mathcal{L}^{i}(\theta)=\sum_{a \in \mathcal{A}_{E_{i}}} \pi_{E_{i}}(a \mid s) \log _{\pi_{\theta}}(a \mid s)$ 其中每一个教师智能体都是根据DQN训练的，因此他们的策略根据Q-函数输出的玻尔兹曼分布得到：\
+   $\pi_{E_{i}}(a \mid s)=\frac{e^{\tau^{-1} Q_{E_{i}}(s, a)}}{\sum_{a^{\prime} \in \mathcal{A}_{E_{i}}} e^{\tau^{-1} Q_{E_{i}}\left(s, a^{\prime}\right)}}$
 - [17] 提出的Distral算法采用的是上述第二种方法，该算法基于 $K$ 个教师策略训练一个质心策略 $\pi_\theta$，每个教师策略的源域为 $\left.\mathcal{M}_{i}=\left\{\mathcal{S}_{i}, \mathcal{A}_{i}, \mathcal{T}_{i}, \gamma, \mathcal{R}_{i}\right)\right\}$，假设不同源MDP的动态转移 $\mathcal{T}_i$ 与奖励分布 $\mathcal{R}_i$ 是不同的，学生策略的目标是能够在不同域中执行任务，其目标函数为最大化 $\max _{\theta} \sum_{i=1}^{K} J\left(\pi_{\theta}, \pi_{E_{i}}\right)$，其中  
-   $\begin{aligned} J\left(\pi_{\theta}, \pi_{E_{i}}\right)=\sum_{t} \mathbb{E}_{\left(s_{t}, a_{t}\right) \sim \pi_{\theta}}\left[\sum _ { t \geq 0 } \gamma ^ { t } \left(r_{i}\left(a_{t}, s_{t}\right)-\right.\right.\\ \left.\left.\frac{\alpha}{\beta} \log \pi_{\theta}\left(a_{t} \mid s_{t}\right)+\frac{1}{\beta} \log \left(\pi_{E_{i}}\left(a_{t} \mid s_{t}\right)\right)\right)\right] \end{aligned} \\$ 该方法与RS方法十分类似，$-\log \left(\pi_{E_{i}}\left(a_{t} \mid s_{t}\right)\right.$ 项引导所学习的策略 $\pi_\theta$ 更加接近于教师策略，而熵项 $\log \pi_{\theta}\left(a_{t} \mid s_{t}\right)$ 则可以用于促进智能体探索。
+
+   $$
+   \begin{aligned} J\left(\pi_{\theta}, \pi_{E_{i}}\right)=\sum_{t} \mathbb{E}_{\left(s_{t}, a_{t}\right) \sim \pi_{\theta}}\left[\sum _ { t \geq 0 } \gamma ^ { t } \left(r_{i}\left(a_{t}, s_{t}\right)-\right.\right.\\ \left.\left.\frac{\alpha}{\beta} \log \pi_{\theta}\left(a_{t} \mid s_{t}\right)+\frac{1}{\beta} \log \left(\pi_{E_{i}}\left(a_{t} \mid s_{t}\right)\right)\right)\right] \end{aligned}
+   $$
+
+   该方法与RS方法十分类似，$-\log \left(\pi_{E_{i}}\left(a_{t} \mid s_{t}\right)\right.$ 项引导所学习的策略 $\pi_\theta$ 更加接近于教师策略，而熵项 $\log \pi_{\theta}\left(a_{t} \mid s_{t}\right)$ 则可以用于促进智能体探索。
 
 **策略复用（Policy Reuse）**
 
 **策略复用（Policy Reuse）**直接从源任务中复用策略以构建目标策略。
 
-- [18] 提出以一定的概率分布 $P$ 来学习专家策略，这里每个策略的使用概率与该策略在目标域的期望性能增益有关，记为 $W_i$：$P\left(\pi_{E_{i}}\right)=\frac{\exp \left(t W_{i}\right)}{\sum_{j=0}^{K} \exp \left(t W_{j}\right)} \\$ 这里 $t$ 是随时间增加的动态温度系数。在Q-learning框架下，目标策略的Q函数以迭代的方法学习：在每一个学习episode，每个策略的 $W_i$ 被重新评估，以此得到新的复用概率 $P$，然后根据该概率采样得到一个行为策略。如果采样到的是专家策略，则采用 $\epsilon$-贪心策略做出动作，如果是正在学习的策略，则直接采用贪心策略。
+- [18] 提出以一定的概率分布 $P$ 来学习专家策略，这里每个策略的使用概率与该策略在目标域的期望性能增益有关，记为 $W_i$：$P\left(\pi_{E_{i}}\right)=\frac{\exp \left(t W_{i}\right)}{\sum_{j=0}^{K} \exp \left(t W_{j}\right)}$ 这里 $t$ 是随时间增加的动态温度系数。在Q-learning框架下，目标策略的Q函数以迭代的方法学习：在每一个学习episode，每个策略的 $W_i$ 被重新评估，以此得到新的复用概率 $P$，然后根据该概率采样得到一个行为策略。如果采样到的是专家策略，则采用 $\epsilon$-贪心策略做出动作，如果是正在学习的策略，则直接采用贪心策略。
 
 **一些思考**
 
@@ -203,7 +208,7 @@ $$
 后来更多的研究通过自动学习一个映射函数，来处理任务间映射问题，大多数工作会学习状态空间或者状态空间子集上的映射函数，在这些工作中，状态表征会被划分为 **智能体特定的** 以及 **任务特定** 的表征，分别记为 $s_{agent}$ 与 $s_{env}$。
 
 - [20] 在智能体特性的状态子空间中学习了一个映射函数，这个映射函数用于设计奖励，这里从 $s_{agent}$ 中获得的不变的特征空间可以用于动作空间不同但有形态学共同点的智能体上。具体而言，该方法假设智能体训练于同一个代理任务上，基于此可以得到映射函数。映射函数使用一个编码-译码神经网络来学习，以此尽可能地保留源域中的特征。当将源域智能体的知识迁移到新任务的目标智能体上时，会在奖励中增加一项用于鼓励目标智能体在潜在特征空间模仿源智能体：  
-   $r^{\prime}(s, \cdot)=\alpha\left\|f\left(s_{a g e n t}^{s} ; \theta_{f}\right)-g\left(s_{a g e n t}^{t} ; \theta_{g}\right)\right\| \\$ 其中 $f(s^s_{agent})$ 是源域中的智能体特定状态，而 $g(s^t_{agent})$ 是目标域中的智能体特定状态。
+   $r^{\prime}(s, \cdot)=\alpha\left\|f\left(s_{a g e n t}^{s} ; \theta_{f}\right)-g\left(s_{a g e n t}^{t} ; \theta_{g}\right)\right\|$ 其中 $f(s^s_{agent})$ 是源域中的智能体特定状态，而 $g(s^t_{agent})$ 是目标域中的智能体特定状态。
 - [21] 提出可以学习转移动作空间： $\mathcal{S}\times\mathcal{A}\times\mathcal{S}$ 上的任务间映射，该研究假设源域与目标域的转移空间不同。源域与目标域的转移元组： $\left\langle s^{s}, a^{s}, s^{\prime s}\right\rangle$ 与 $\left\langle s^{t}, a^{t}, s^{\prime t}\right\rangle$ 均被映射到隐藏空间 $Z$。给定 $Z$ 上的特征表达，可以度量源域元组与目标域元组之间的相似度，相似度高的对可以用于学习映射关系：$\mathcal{X}:\left\langle s^{t}, a^{t}, s^{\prime t}\right\rangle=\mathcal{X}\left(\left\langle s^{s}, a^{s}, s^{\prime s}\right\rangle\right) $。此后，源域专家策略中采样得到的状态可用于促进目标域中好状态更多的出现，以此得到一个更好的初始化。
 
 **一些思考**
@@ -224,7 +229,7 @@ $$
    $h_{i}^{(k)}=f\left(W_{i}^{(k)} h_{i-1}^{(k)}+\sum_{j<k} U_{i}^{(k: j)} h_{i-1}^{(j)}\right)$ 其中 $h^{k}_i$ 为任务（列）$k$ 的第 $i$ 个隐藏层，$W_i^{(k)}$ 是其对应的权重矩阵，$U_i^{(k:j)}$ 表示之前任务的第 $i-1$ 层特征对任务 $k$ 当前层的联系。递进神经网络可以有效处理多任务，但它需要巨大的网络结构，该结构随着任务增多而增大。
 - [23] 提出了 **PathNet** ，该结构采用固定尺寸的网络解决了网络增大的问题。PathNet包含 **pathways**，即包含之前任务知识的神经元子集，pathway的数目通过锦标赛选择遗传算法（tournament selection genetic algorithm）发展。
 - [24] 采用**模块化网络（modular network）**，将策略网络分解为任务特定模块与智能体特定模块，具体而言，$\pi$ 是智能体在任务 $\mathcal{M}_k$ 上的策略，是状态 $s$ 的函数 $\phi$，该函数可以分解为两个模块 $g_k$ 与 $f_r$：  
-   $\pi(s):=\phi\left(s_{\text {env }}, s_{\text {agent }}\right)=f_{r}\left(g_{k}\left(s_{\text {env }}\right), s_{\text {agent }}\right) \\$ 其中 $f_r$ 为智能体特定模块，$g_k$ 为任务特定模块，该论文的中心思想是任务特定模块可以作为迁移知识，应用于执行相同任务的不同智能体上。相应地，智能体特定模块可以应用在相同智能体的不同任务上。
+   $\pi(s):=\phi\left(s_{\text {env }}, s_{\text {agent }}\right)=f_{r}\left(g_{k}\left(s_{\text {env }}\right), s_{\text {agent }}\right)$ 其中 $f_r$ 为智能体特定模块，$g_k$ 为任务特定模块，该论文的中心思想是任务特定模块可以作为迁移知识，应用于执行相同任务的不同智能体上。相应地，智能体特定模块可以应用在相同智能体的不同任务上。
 
 **表征解构（Disentangling Representations）**
 

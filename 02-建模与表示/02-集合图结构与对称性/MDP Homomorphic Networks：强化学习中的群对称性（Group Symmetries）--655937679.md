@@ -28,7 +28,7 @@
 3. **单位元素（Identity Element）**：$\exists e\in G$，使得 $\forall g\in G, g*e=e*g=g$，$e$ 即为 $G$ 的单位元素。
 4. **逆元素（Inverse Element）**：$\forall g\in G$，$\exists g^{-1}\in G$，使得 $g*g^{-1}=g^{-1}*g=e$。
 
-举例来说，整数加法群是一种最简单的群，对于整数集合$ {..., -3, -2, -1, 0, 1, 2, 3, ...}$，加法 $+$ 是二元运算。对于任何两个整数 $a$ 和 $b$，它们的和 $a + b$ 仍然是整数。零（$0$）是单位元素，对于任何整数 $a$，$a + 0 = 0 + a = a$。对于每个整数 $a$$，$-$a$ 是它的逆元素，因为 $a + (-a) = (-a) + a = 0$。
+举例来说，整数加法群是一种最简单的群，对于整数集合$ {..., -3, -2, -1, 0, 1, 2, 3, ...}$，加法 $+$ 是二元运算。对于任何两个整数 $a$ 和 $b$，它们的和 $a + b$ 仍然是整数。零（$0$）是单位元素，对于任何整数 $a$，$a + 0 = 0 + a = a$。对于每个整数 $a$，$-a$ 是它的逆元素，因为 $a + (-a) = (-a) + a = 0$。
 
 **群作用（Group action）**：群作用是给定群 $G$ 对集合 $X$ 的一种映射，它将每个群元素 $g\in G$ 映射到一个集合上的映射，这个映射可以表示为 $f_g(x):G \times X \rightarrow X$。群作用必须满足以下性质：
 
@@ -49,7 +49,7 @@
 
 **不变（Invariance）**与**对称（Symmetries）**：等价类中的点通常存在一定的关系，这可以用一个变换操作 $L_g:\mathcal{X}\rightarrow\mathcal{X}$，其中 $g\in G$，$G$ 表示群。如果 $L_g$ 满足
 
-$f(x)=f\left(L_q[x]\right), \quad \text { for all } g \in G, x \in \mathcal{X} \\$则可以说 $f$ 对于 $L_g$ 不变或对称，并且 $\left\{L_g\right\}_{g \in G}$ 是 $f$ 对称操作的集合。可以看出，满足该不变等式的先决条 件是，$L_g(\cdot)$ 只能将 $x$ 映射到其等价类中。 另外，如果 $f$ 对于 $L_g$ 不变，那么它对于 $G$ 上的轨道均不变，此时 $x$ 的轨道 $\mathcal{O}_x$ 即为 $x$ 通过变换操作 $L_g$ 可以得到的点的集合：
+$f(x)=f\left(L_q[x]\right), \quad \text { for all } g \in G, x \in \mathcal{X}$ 则可以说 $f$ 对于 $L_g$ 不变或对称，并且 $\left\{L_g\right\}_{g \in G}$ 是 $f$ 对称操作的集合。可以看出，满足该不变等式的先决条 件是，$L_g(\cdot)$ 只能将 $x$ 映射到其等价类中。 另外，如果 $f$ 对于 $L_g$ 不变，那么它对于 $G$ 上的轨道均不变，此时 $x$ 的轨道 $\mathcal{O}_x$ 即为 $x$ 通过变换操作 $L_g$ 可以得到的点的集合：
 
 
 
@@ -221,16 +221,29 @@ $S(\mathbf{W})$ 有三个重要性质：
 
 **1. 对称性（Symmetric Property）**： $S(\mathbf{W})$ 是对称的，即 $S(\mathbf{W})\in\mathcal{W}$.  
  证明：只需证明 $\mathbf{W}=\mathbf{K}_{g}^{-1}\mathbf{W}\mathbf{L}_{g},\quad\mathrm{for~all~}g\in G$：  
- $\begin{aligned} \mathbf{K}_{g}^{-1}S(\mathbf{W})\mathbf{L}_{g}& =\mathbf{K}_{g}^{-1}\left(\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{h}^{-1}\mathbf{W}\mathbf{L}_{h}\right)\mathbf{L}_{g} && \operatorname{substitute}S(\mathbf{W})=\mathbf{K}_{g}^{-1}S(\mathbf{W})\mathbf{L}_{g}  \\ &=\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{g}^{-1}\mathbf{K}_{h}^{-1}\mathbf{W}\mathbf{L}_{h}\mathbf{L}_{g} \\ &=\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{hg}^{-1}\mathbf{W}\mathbf{L}_{hg}&& {\mathrm{representation~definition:~}}\mathbf{L}_{h}\mathbf{L}_{g}=\mathbf{L}_{hg}  \\ &=\frac{1}{|G|}\sum_{g'g^{-1}\in G}\mathbf{K}_{g'}^{-1}\mathbf{W}\mathbf{L}_{g'}&& \mathrm{change~of~variables~}g^{\prime}=hg,h=g^{\prime}g^{-1}  \\ &=\frac1{|G|}\sum_{g^{\prime}\in Gg}\mathbf{K}_{g^{\prime}}^{-1}\mathbf{W}\mathbf{L}_{g^{\prime}}&& g^{\prime}g^{-1}\in G\iff g^{\prime}\in Gg  \\ &=\frac{1}{|G|}\sum_{g^{\prime}\in G}\mathbf{K}_{g^{\prime}}^{-1}\mathbf{W}\mathbf{L}_{g^{\prime}}&& G=Gg  \\ &=S(\mathbf{W})&& \mathrm{definition~of~symmetrizer}.  \end{aligned} \\$ 因此，$S(\mathbf{W})\in\mathcal{W}$。
+
+ $$
+ \begin{aligned} \mathbf{K}_{g}^{-1}S(\mathbf{W})\mathbf{L}_{g}& =\mathbf{K}_{g}^{-1}\left(\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{h}^{-1}\mathbf{W}\mathbf{L}_{h}\right)\mathbf{L}_{g} && \operatorname{substitute}S(\mathbf{W})=\mathbf{K}_{g}^{-1}S(\mathbf{W})\mathbf{L}_{g}  \\ &=\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{g}^{-1}\mathbf{K}_{h}^{-1}\mathbf{W}\mathbf{L}_{h}\mathbf{L}_{g} \\ &=\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{hg}^{-1}\mathbf{W}\mathbf{L}_{hg}&& {\mathrm{representation~definition:~}}\mathbf{L}_{h}\mathbf{L}_{g}=\mathbf{L}_{hg}  \\ &=\frac{1}{|G|}\sum_{g'g^{-1}\in G}\mathbf{K}_{g'}^{-1}\mathbf{W}\mathbf{L}_{g'}&& \mathrm{change~of~variables~}g^{\prime}=hg,h=g^{\prime}g^{-1}  \\ &=\frac1{|G|}\sum_{g^{\prime}\in Gg}\mathbf{K}_{g^{\prime}}^{-1}\mathbf{W}\mathbf{L}_{g^{\prime}}&& g^{\prime}g^{-1}\in G\iff g^{\prime}\in Gg  \\ &=\frac{1}{|G|}\sum_{g^{\prime}\in G}\mathbf{K}_{g^{\prime}}^{-1}\mathbf{W}\mathbf{L}_{g^{\prime}}&& G=Gg  \\ &=S(\mathbf{W})&& \mathrm{definition~of~symmetrizer}.  \end{aligned}
+ $$
+
+ 因此，$S(\mathbf{W})\in\mathcal{W}$。
 
 **2. 固定性（Fixing Property）**： $S(\mathbf{W})$ 可以固定任何对称权重 $\mathbf{W}$，即 $\mathbf{W}\in\mathcal{W}\implies S(\mathbf{W})=\mathbf{W}$。  
  证明：这一性质证明了 $S(\mathbf{W})$ 可以覆盖住整个等变空间 $\mathcal{W}$，即 $\mathcal{W}=\{S(\mathbf{W})\in\mathcal{W}|\mathbf{W}\in\mathcal{W}_{\mathrm{total}}\}$。  
  对于 $\mathbf{W}\in\mathcal{W}$：  
- $\begin{aligned} S(\mathbf{W})& =\frac{1}{|G|}\sum_{g\in G}\mathbf{K}_{g}^{-1}\mathbf{W}\mathbf{L}_{g} && \text{definition}  \\ &=\frac{1}{|G|}\sum_{g\in G}\mathbf{K}_{g}^{-1}\mathbf{K}_{g}\mathbf{W}&& \mathbf{W}\in\mathcal{W}\iff\mathbf{K}_{g}\mathbf{W}=\mathbf{W}\mathbf{L}_{g},\forall g\in G  \\ &=\frac{1}{|G|}\sum_{g\in G}\mathbf{w} \\ &=\mathbf{W} \end{aligned} \\$ 这一等式表明symmetrizer使得等变空间保持不变，用群论中，这被描述为 $\mathcal{W}$ 在 $G$ 下是固定的。由于 $S:\mathcal{W}_{\text{total}}\rightarrow \mathcal{W}$，总是存在矩阵 $\mathbf{W}$ 使得对于每个 $\mathbf{W} \in \mathcal{W}$，$S(\mathbf{W})=\mathbf{W}$，也就证明了 $\mathcal{W}=\{S(\mathbf{W})\in\mathcal{W}|\mathbf{W}\in\mathcal{W}_{\mathrm{total}}\}$。
+
+ $$
+ \begin{aligned} S(\mathbf{W})& =\frac{1}{|G|}\sum_{g\in G}\mathbf{K}_{g}^{-1}\mathbf{W}\mathbf{L}_{g} && \text{definition}  \\ &=\frac{1}{|G|}\sum_{g\in G}\mathbf{K}_{g}^{-1}\mathbf{K}_{g}\mathbf{W}&& \mathbf{W}\in\mathcal{W}\iff\mathbf{K}_{g}\mathbf{W}=\mathbf{W}\mathbf{L}_{g},\forall g\in G  \\ &=\frac{1}{|G|}\sum_{g\in G}\mathbf{w} \\ &=\mathbf{W} \end{aligned}
+ $$
+
+ 这一等式表明symmetrizer使得等变空间保持不变，用群论中，这被描述为 $\mathcal{W}$ 在 $G$ 下是固定的。由于 $S:\mathcal{W}_{\text{total}}\rightarrow \mathcal{W}$，总是存在矩阵 $\mathbf{W}$ 使得对于每个 $\mathbf{W} \in \mathcal{W}$，$S(\mathbf{W})=\mathbf{W}$，也就证明了 $\mathcal{W}=\{S(\mathbf{W})\in\mathcal{W}|\mathbf{W}\in\mathcal{W}_{\mathrm{total}}\}$。
 
 **3. 幂等性（Idempotence Property）**： $S(\mathbf{W})$ 无论执行多少次结果都一样，即 $S(S(\mathbf{W}))=S(\mathbf{W})$。  
  证明：  
- $\begin{aligned} S(S(\mathbf{W}))& =S\left(\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{h}^{-1}\mathbf{W}\mathbf{L}_{h}\right)  \\ &=\frac{1}{|G|}\sum_{g\in G}\mathbf{K}_{g}^{-1}\left(\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{h}^{-1}\mathbf{W}\mathbf{L}_{h}\right)\mathbf{L}_{g} \\ &=\frac{1}{|G|}\sum_{g\in G}\left(\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{g}^{-1}\mathbf{K}_{h}^{-1}\mathbf{W}\mathbf{L}_{h}\mathbf{L}_{g}\right)&& \text{linearity of sum}  \\ &=\frac{1}{|G|}\sum_{g\in G}\left(\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{hg}^{-1}\mathbf{W}\mathbf{L}_{hg}\right)&& \text{definition of group representations}  \\ &=\frac{1}{|G|}\sum_{g\in G}\left(\frac{1}{|G|}\sum_{g^{\prime}g^{-1}\in G}\mathbf{K}_{g^{\prime}}^{-1}\mathbf{WL}_{g^{\prime}}\right)&& \mathrm{change~of~variables~}g^{\prime}=hg  \\ &=\frac{1}{|G|}\sum_{g\in G}\left(\frac{1}{|G|}\sum_{g'\in Gg}\mathbf{K}_{g'}^{-1}\mathbf{WL}_{g'}\right)&& g^{\prime}g^{-1}\in G\iff g^{\prime}\in Gg  \\ &=\frac{1}{|G|}\sum_{g\in G}\left(\frac{1}{|G|}\sum_{g'\in G}\mathbf{K}_{g'}^{-1}\mathbf{W}\mathbf{L}_{g'}\right)&& Gg=G  \\ &=\frac{1}{|G|}\sum_{g^{\prime}\in G}\mathbf{K}_{g^{\prime}}^{-1}\mathbf{W}\mathbf{L}_{g^{\prime}}&& \text{sum over constant}  \\ &=S(\mathbf{W}) \end{aligned} \\$
+
+ $$
+ \begin{aligned} S(S(\mathbf{W}))& =S\left(\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{h}^{-1}\mathbf{W}\mathbf{L}_{h}\right)  \\ &=\frac{1}{|G|}\sum_{g\in G}\mathbf{K}_{g}^{-1}\left(\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{h}^{-1}\mathbf{W}\mathbf{L}_{h}\right)\mathbf{L}_{g} \\ &=\frac{1}{|G|}\sum_{g\in G}\left(\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{g}^{-1}\mathbf{K}_{h}^{-1}\mathbf{W}\mathbf{L}_{h}\mathbf{L}_{g}\right)&& \text{linearity of sum}  \\ &=\frac{1}{|G|}\sum_{g\in G}\left(\frac{1}{|G|}\sum_{h\in G}\mathbf{K}_{hg}^{-1}\mathbf{W}\mathbf{L}_{hg}\right)&& \text{definition of group representations}  \\ &=\frac{1}{|G|}\sum_{g\in G}\left(\frac{1}{|G|}\sum_{g^{\prime}g^{-1}\in G}\mathbf{K}_{g^{\prime}}^{-1}\mathbf{WL}_{g^{\prime}}\right)&& \mathrm{change~of~variables~}g^{\prime}=hg  \\ &=\frac{1}{|G|}\sum_{g\in G}\left(\frac{1}{|G|}\sum_{g'\in Gg}\mathbf{K}_{g'}^{-1}\mathbf{WL}_{g'}\right)&& g^{\prime}g^{-1}\in G\iff g^{\prime}\in Gg  \\ &=\frac{1}{|G|}\sum_{g\in G}\left(\frac{1}{|G|}\sum_{g'\in G}\mathbf{K}_{g'}^{-1}\mathbf{W}\mathbf{L}_{g'}\right)&& Gg=G  \\ &=\frac{1}{|G|}\sum_{g^{\prime}\in G}\mathbf{K}_{g^{\prime}}^{-1}\mathbf{W}\mathbf{L}_{g^{\prime}}&& \text{sum over constant}  \\ &=S(\mathbf{W}) \end{aligned}
+ $$
 
 这些性质表明symmetrizer $S$ 可以将任意 $\mathbf{W}\in\mathcal{W}_{\text{total}}$ 投影到等变空间 $\mathcal{W}$ 中。
 

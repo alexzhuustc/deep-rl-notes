@@ -17,7 +17,7 @@
 
 本文提出的UVFA在标准马尔科夫框架下增加了目标 $g\in \mathcal{G}$。对于任意 $g\in \mathcal{G}$，定义伪-奖励函数 $R_g(s,a,s')$ 与伪-折扣函数 $\gamma_g(s)$，这里 $\gamma_g(s)$ 同时决定了每一时刻与 $s$ 相关的折扣因子，以及状态是否终止。对应新加入的 $g$，状态价值函数与动作价值函数分别扩展为：
 
-$V_{g, \pi}(s):=\mathbb{E}\left[\sum_{t=0}^{\infty} R_{g}\left(s_{t+1}, a_{t}, s_{t}\right) \prod_{k=0}^{t} \gamma_{g}\left(s_{k}\right) \mid s_{0}=s\right] \\$$Q_{g, \pi}(s, a):=\mathbb{E}_{s^{\prime}}\left[R_{g}\left(s, a, s^{\prime}\right)+\gamma_{g}\left(s^{\prime}\right) \cdot V_{g, \pi}\left(s^{\prime}\right)\right] \\$
+$V_{g, \pi}(s):=\mathbb{E}\left[\sum_{t=0}^{\infty} R_{g}\left(s_{t+1}, a_{t}, s_{t}\right) \prod_{k=0}^{t} \gamma_{g}\left(s_{k}\right) \mid s_{0}=s\right]$ $Q_{g, \pi}(s, a):=\mathbb{E}_{s^{\prime}}\left[R_{g}\left(s, a, s^{\prime}\right)+\gamma_{g}\left(s^{\prime}\right) \cdot V_{g, \pi}\left(s^{\prime}\right)\right]$
 
 每个目标 $g$ 均对应着一个最优策略 $\pi_g^*:=\arg\max_a Q_{\pi,g}(s,a)$，以及最优值函数 $V^*_g:=V_{g,\pi^*_g}$，$Q^*_g:=Q_{g,\pi^*_g}$。
 
@@ -85,7 +85,13 @@ $$
 
 本论文并没有讨论目标从哪里来，以及如何表示目标这一问题，而是采用了最简单的一种情况，即目标为状态的子集：$\mathcal{G}\subset\mathcal{S}$，当状态达到目标时，获得奖励，对应的伪-奖励函数与伪-折扣可以表示成：
 
-$R_{g}\left(s, a, s^{\prime}\right)= \begin{cases}1, & s^{\prime}=g \text { and } \gamma_{e x t}(s) \neq 0 \\ 0, & \text { otherwise }\end{cases} \\$$\gamma_{g}(s)= \begin{cases}0, & s=g \\ \gamma_{e x t}(s), & \text { otherwise }\end{cases} \\$
+$$
+R_{g}\left(s, a, s^{\prime}\right)= \begin{cases}1, & s^{\prime}=g \text { and } \gamma_{e x t}(s) \neq 0 \\ 0, & \text { otherwise }\end{cases}
+$$
+
+$$
+\gamma_{g}(s)= \begin{cases}0, & s=g \\ \gamma_{e x t}(s), & \text { otherwise }\end{cases}
+$$
 
 其中，$\gamma_{ext}$ 表示原本的折扣函数。
 

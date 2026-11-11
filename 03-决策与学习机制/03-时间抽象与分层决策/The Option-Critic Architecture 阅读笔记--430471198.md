@@ -27,11 +27,11 @@ option框架对时间扩展的动作进行了定义。一个马尔科夫**选项
 在计算该目标函数对于 $\theta$ 与 $\vartheta$ 的梯度之前，我们需要定义一系列价值函数：
 
 - **option-状态 价值函数**（对应 $V(s)$ ）：在状态 $s$ 下选择option $\omega$ 所能获得的期望收益  
-   $Q_{\Omega}(s, \omega)=\sum_{a} \pi_{\omega, \theta}(a \mid s) Q_{U}(s, \omega, a) \\$ 这里的 $(s,\omega)$ 可以表示成一个 **增强状态空间（augmented state space）**， $Q_{U}: \mathcal{S} \times \Omega \times \mathcal{A} \rightarrow \mathbb{R}$ 表示选项 $\omega$ 内的动作价值函数。
+   $Q_{\Omega}(s, \omega)=\sum_{a} \pi_{\omega, \theta}(a \mid s) Q_{U}(s, \omega, a)$ 这里的 $(s,\omega)$ 可以表示成一个 **增强状态空间（augmented state space）**， $Q_{U}: \mathcal{S} \times \Omega \times \mathcal{A} \rightarrow \mathbb{R}$ 表示选项 $\omega$ 内的动作价值函数。
 - **intra-policy 动作价值函数** （对应 $Q(s,a)$ ）：在状态 $s$ 与 option $\omega$ 下选择动作 $a$​ 所能获得的期望收益  
-   $Q_{U}(s, \omega, a)=r(s, a)+\gamma \sum_{s^{\prime}} \mathrm{P}\left(s^{\prime} \mid s, a\right) U\left(\omega, s^{\prime}\right) \\$ 函数 $U: \Omega \times \mathcal{S} \rightarrow \mathbb{R}$ 表示 抵达时（upon arrival）的option 价值函数（类似于普通强化学习中的 $V(s')$ ）。
+   $Q_{U}(s, \omega, a)=r(s, a)+\gamma \sum_{s^{\prime}} \mathrm{P}\left(s^{\prime} \mid s, a\right) U\left(\omega, s^{\prime}\right)$ 函数 $U: \Omega \times \mathcal{S} \rightarrow \mathbb{R}$ 表示 抵达时（upon arrival）的option 价值函数（类似于普通强化学习中的 $V(s')$ ）。
 - **抵达时的 option 价值函数** （对应 $V(s')$ ）：表示执行 option $\omega$ 后进入状态 $s'$​ 的期望收益  
-   $U\left(\omega, s^{\prime}\right)=\left(1-\beta_{\omega, \vartheta}\left(s^{\prime}\right)\right) Q_{\Omega}\left(s^{\prime}, \omega\right)+\beta_{\omega, \vartheta}\left(s^{\prime}\right) V_{\Omega}\left(s^{\prime}\right) \\$ 这里的 $V_\Omega:\mathcal{S}\rightarrow\mathbb{R}$ 表示状态 $s$ 的价值函数，且 $V_{\Omega}\left(s^{\prime}\right)=\sum_{\omega^{\prime}} \pi_{\Omega}\left(\omega^{\prime} \mid s^{\prime}\right)Q_{\Omega}(s', \omega')$ 。
+   $U\left(\omega, s^{\prime}\right)=\left(1-\beta_{\omega, \vartheta}\left(s^{\prime}\right)\right) Q_{\Omega}\left(s^{\prime}, \omega\right)+\beta_{\omega, \vartheta}\left(s^{\prime}\right) V_{\Omega}\left(s^{\prime}\right)$ 这里的 $V_\Omega:\mathcal{S}\rightarrow\mathbb{R}$ 表示状态 $s$ 的价值函数，且 $V_{\Omega}\left(s^{\prime}\right)=\sum_{\omega^{\prime}} \pi_{\Omega}\left(\omega^{\prime} \mid s^{\prime}\right)Q_{\Omega}(s', \omega')$ 。
 
 **上面的第二个表达式中，之所以要用 $U(\omega,s')$，大概是因为我们并不知道进入状态 $s'$ 后是什么option，有 $\beta_{\omega,\vartheta}$ 的概率转移到其他 $\omega'$，也有 $1- \beta_{\omega,\vartheta}$ 继续停留在 $\omega$。$U(\omega,s')$ 实际上就是概率加权的 $Q_\Omega(s',\omega')$。此时第二个表达式实际上就是对应于增强状态 $(s,\omega)$ 的动作价值函数的贝尔曼方程。**
 
@@ -69,7 +69,13 @@ $$
 
 进一步的，我们还可以得到 $k$​ 步折扣概率的递归表达式：
 
-$\begin{aligned} &\mathrm{P}_{\gamma}^{(k)}\left(s_{t+k}, \omega_{t+k} \mid s_{t}, \omega_{t}\right)=\sum_{s_{t+1}} \sum_{\omega_{t+1}}( \left.\mathrm{P}_{\gamma}^{(1)}\left(s_{t+1}, \omega_{t+1} \mid s_{t}, \omega_{t}\right) \mathrm{P}_{\gamma}^{(k-1)}\left(s_{t+k}, \omega_{t+k} \mid s_{t+1}, \omega_{t+1}\right)\right) \\ \end{aligned} \\$$\mathrm{P}_{\gamma}^{(k)}\left(s_{t+k}, \omega_{t+k-1} \mid s_{t}, \omega_{t-1}\right)=\sum_{s_{t+1}} \sum_{\omega_{t}}( \left.\mathrm{P}_{\gamma}^{(1)}\left(s_{t+1}, \omega_{t} \mid s_{t}, \omega_{t-1}\right) \mathrm{P}_{\gamma}^{(k-1)}\left(s_{t+k}, \omega_{t+k-1} \mid s_{t+1}, \omega_{t}\right)\right) \\$
+$$
+\begin{aligned} &\mathrm{P}_{\gamma}^{(k)}\left(s_{t+k}, \omega_{t+k} \mid s_{t}, \omega_{t}\right)=\sum_{s_{t+1}} \sum_{\omega_{t+1}}( \left.\mathrm{P}_{\gamma}^{(1)}\left(s_{t+1}, \omega_{t+1} \mid s_{t}, \omega_{t}\right) \mathrm{P}_{\gamma}^{(k-1)}\left(s_{t+k}, \omega_{t+k} \mid s_{t+1}, \omega_{t+1}\right)\right) \\ \end{aligned}
+$$
+
+$$
+\mathrm{P}_{\gamma}^{(k)}\left(s_{t+k}, \omega_{t+k-1} \mid s_{t}, \omega_{t-1}\right)=\sum_{s_{t+1}} \sum_{\omega_{t}}( \left.\mathrm{P}_{\gamma}^{(1)}\left(s_{t+1}, \omega_{t} \mid s_{t}, \omega_{t-1}\right) \mathrm{P}_{\gamma}^{(k-1)}\left(s_{t+k}, \omega_{t+k-1} \mid s_{t+1}, \omega_{t}\right)\right)
+$$
 
 ### **推导策略梯度**
 
@@ -80,7 +86,12 @@ $\begin{aligned} &\mathrm{P}_{\gamma}^{(k)}\left(s_{t+k}, \omega_{t+k} \mid s_{t
 由于这里学习的是 intra-option即option内的策略，因此折扣收益应当也是给定 option条件下的，此时 $\rho\left(\Omega, \theta, \vartheta, s, \omega\right)=\mathbb{E}_{\Omega, \theta, \omega}\left[\sum_{t=0}^{\infty} \gamma^{t} r_{t+1} \mid s, \omega\right]$ 实际上就对应着 $Q_{\Omega}(s, \omega)$（相比于普通策略梯度里用 $Q(s)$，这里用增强状态替代了状态 ）（这里的推导过程应该主要参考了sutton的推导）
 
 - （**Intra-Option Policy Gradient Theorem**）：对于一系列给定的马尔科夫option集合，这些集合的 intra-option policies的模型参数为 $\theta$，那么期望收益在初始条件为 $(s_0,\omega_0)$ 时对于 $\theta$ 的梯度为  
-   $\begin{aligned} &\frac{\partial Q_{\Omega}\left(s_{0}, \omega_{0}\right)}{\partial \theta}=\sum_{s, \omega} \mu_{\Omega}\left(s, \omega \mid s_{0}, \omega_{0}\right) \sum_{a} \frac{\partial \pi_{\omega, \theta}(a \mid s)}{\partial \theta} Q_{U}(s, \omega, a) \end{aligned} \\$ 其中 $\mu_{\Omega}\left(s, \omega \mid s_{0}, \omega_{0}\right)$ 为从 $(s_0,\omega_0)$ 开始的状态-option对的**折扣因子**： $\mu_{\Omega}\left(s, \omega \mid s_{0}, \omega_{0}\right)=\sum_{t=0}^{\infty} \gamma^{t} \mathrm{P}\left(s_{t}=s, \omega_{t}=\omega \mid s_{0}, \omega_{0}\right)$，即在计算导数时对于每个增强状态的权重，即 $\theta$ 的改变对不同的 $\left(s,\omega\right)$ 有不同的影响，因此在算梯度时需要根据这些增强状态出现得概率进行加权，使得出现概率大的增强概率的权重更大，这里对应于原始策略梯度中的 $\mu(s)$。  
+
+   $$
+   \begin{aligned} &\frac{\partial Q_{\Omega}\left(s_{0}, \omega_{0}\right)}{\partial \theta}=\sum_{s, \omega} \mu_{\Omega}\left(s, \omega \mid s_{0}, \omega_{0}\right) \sum_{a} \frac{\partial \pi_{\omega, \theta}(a \mid s)}{\partial \theta} Q_{U}(s, \omega, a) \end{aligned}
+   $$
+
+   其中 $\mu_{\Omega}\left(s, \omega \mid s_{0}, \omega_{0}\right)$ 为从 $(s_0,\omega_0)$ 开始的状态-option对的**折扣因子**： $\mu_{\Omega}\left(s, \omega \mid s_{0}, \omega_{0}\right)=\sum_{t=0}^{\infty} \gamma^{t} \mathrm{P}\left(s_{t}=s, \omega_{t}=\omega \mid s_{0}, \omega_{0}\right)$，即在计算导数时对于每个增强状态的权重，即 $\theta$ 的改变对不同的 $\left(s,\omega\right)$ 有不同的影响，因此在算梯度时需要根据这些增强状态出现得概率进行加权，使得出现概率大的增强概率的权重更大，这里对应于原始策略梯度中的 $\mu(s)$。
    这里的梯度描述了策略上微小的改变对整个折扣收益的影响。
 
 以下是推导过程：
@@ -134,7 +145,7 @@ $$
 由于这里要推导的是 termination gradient，termination function决定了在执行 $w$ 时下一个状态 $s'$ 是否会继续停留在此option，因此这里的开始状态是 $(\omega_0,s_1)$ ，而对应的价值函数也应当是抵达时的option价值函数 $U(\omega,s')$，与计算 intra-policy gradient 时是有所区别的。
 
 - （**Termination Gradient Theorem**）：对于一系列给定的马尔科夫option集合，这些集合的 termination function 的模型参数为 $\vartheta$，那么期望收益在初始条件为 $(s_1,\omega_0)$ 时对于 $\vartheta$​ 的梯度为  
-   $\frac{\partial U\left(\omega_{0}, s_{1}\right)}{\partial \vartheta}=-\sum_{s^{\prime}, \omega} \mu_{\Omega}\left(s^{\prime}, \omega \mid s_{1}, \omega_{0}\right) \frac{\partial \beta_{\omega, \vartheta}\left(s^{\prime}\right)}{\partial \vartheta} A_{\Omega}\left(s^{\prime}, \omega\right) \\$ 其中 $\mu_{\Omega}\left(s^{\prime}, \omega \mid s_{1}, \omega_{0}\right)$ 表示从 $\left(s_1,\omega_0\right)$ 开始的状态-option对的折扣因子：$\mu_{\Omega}\left(s, \omega \mid s_{1}, \omega_{0}\right)=\sum_{t=0}^{\infty} \gamma^{t} \mathrm{P}\left(s_{t+1}=s, \omega_{t}=\omega \mid s_{1}, \omega_{0}\right)$，$A_{\Omega}\left(s^{\prime}, \omega\right)=Q_{\Omega}\left(s^{\prime}, \omega\right)-V_{\Omega}\left(s^{\prime}\right)$ 表示优势函数。  
+   $\frac{\partial U\left(\omega_{0}, s_{1}\right)}{\partial \vartheta}=-\sum_{s^{\prime}, \omega} \mu_{\Omega}\left(s^{\prime}, \omega \mid s_{1}, \omega_{0}\right) \frac{\partial \beta_{\omega, \vartheta}\left(s^{\prime}\right)}{\partial \vartheta} A_{\Omega}\left(s^{\prime}, \omega\right)$ 其中 $\mu_{\Omega}\left(s^{\prime}, \omega \mid s_{1}, \omega_{0}\right)$ 表示从 $\left(s_1,\omega_0\right)$ 开始的状态-option对的折扣因子：$\mu_{\Omega}\left(s, \omega \mid s_{1}, \omega_{0}\right)=\sum_{t=0}^{\infty} \gamma^{t} \mathrm{P}\left(s_{t+1}=s, \omega_{t}=\omega \mid s_{1}, \omega_{0}\right)$，$A_{\Omega}\left(s^{\prime}, \omega\right)=Q_{\Omega}\left(s^{\prime}, \omega\right)-V_{\Omega}\left(s^{\prime}\right)$ 表示优势函数。\
    在普通马尔科夫过程的策略梯度算法中，优势函数通常作为 **基准（baseline）**用来减小梯度估计的方差，此时它的存在通常是与算法设计相关的。然而在本文所推导的option场景中，优势函数是直接作为策略梯度推导的结果而存在的，从公式中我们可以直观地看出：当选择的option的价值相对于所有option的平均价值而言是次优的时，优势函数是负的，此时它会指引着termination function朝着正方向增加，也就是增加该选项的终止概率，这是符合直觉的（该option不好，跳到下一个option）。
 
 以下是推导过程：
